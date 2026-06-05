@@ -15,6 +15,10 @@
         <None Update="View\*.scl">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+
+        <None Update="wwwroot\**\*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     
 </Project>

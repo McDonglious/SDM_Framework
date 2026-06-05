@@ -2,12 +2,23 @@
 
 <html>
 <head>
-    <title>PathVariable primitive model test</title>
+    <title>Path Variable Test</title>
+    <link rel="stylesheet" href="/wwwroot/css/style.css">
 </head>
 <body>
-    <h2>Path Variable and Primitive model Test</h2>
-    <p>the PathVariable is received and send back into the view as a primitive model</p>
-    <p>the correct output should be the same as the path variable</p>
-    <h3>output is @Model.Value</h3>
+    <nav>
+        <a href="/Testcontroller/about">Detail</a>
+        <a href="/Testcontroller/listing">Directory</a>
+    </nav>
+    <div class="container">
+        <div class="page-header">
+            <h1>Path Variable</h1>
+            <h2>Primitive model via path variable</h2>
+        </div>
+        <div class="card">
+            <p class="label">Received value</p>
+            <h3>@Model.Value</h3>
+        </div>
+    </div>
 </body>
 </html>

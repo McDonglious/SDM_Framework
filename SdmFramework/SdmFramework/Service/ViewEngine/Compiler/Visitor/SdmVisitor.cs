@@ -25,7 +25,6 @@ public class SdmVisitor : BasicRazorBaseVisitor<object?>
     
     public override object? VisitModelDeclaration(BasicRazorParser.ModelDeclarationContext context)
     {
-        var modelType = context.type().ID().GetText();
         return "";
     }
 
@@ -118,7 +117,14 @@ public class SdmVisitor : BasicRazorBaseVisitor<object?>
 
         string tagName = openingTag.ID().ToString();
     
-        string openingTagResult = $"<{tagName}>";
+        string attributes = "";
+        foreach (var attr in openingTag.attribute())
+        {
+            string attrName = attr.ID().GetText();
+            string attrValue = attr.STRING().GetText();
+            attributes += $" {attrName}={attrValue}";
+        }
+        string openingTagResult = $"<{tagName}{attributes}>";
     
         
         string contentResult = openingTagResult;

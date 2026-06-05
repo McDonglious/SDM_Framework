@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from BasicRazor.g4 by ANTLR 4.13.1
+// Generated from C:/schoolprojects/sander.demiddelaer-main/SdmFramework/SdmFramework/Service/ViewEngine/Compiler/Grammar/BasicRazor.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -97,6 +97,12 @@ public interface IBasicRazorVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitOpeningTag([NotNull] BasicRazorParser.OpeningTagContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="BasicRazorParser.attribute"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAttribute([NotNull] BasicRazorParser.AttributeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="BasicRazorParser.closingTag"/>.
 	/// </summary>

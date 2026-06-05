@@ -2,14 +2,36 @@
 
 <html>
 <head>
-    <title></title>
+    <title>Directory</title>
+    <link rel="stylesheet" href="/wwwroot/css/style.css">
 </head>
 <body>
-<h1>The list</h1>
-@foreach(Model)
-    {
-        <h1>@item.Name</h1>
-        <p>@item.Email</p>
-    }  
+    <nav>
+        <a href="/Testcontroller/about">Detail</a>
+        <a href="/Testcontroller/listing">Directory</a>
+    </nav>
+    <div class="container">
+        <div class="page-header">
+            <h1>People Directory</h1>
+            <h2>All members</h2>
+        </div>
+        @foreach(Model)
+        {
+            <div class="card">
+                <h3>@item.Name</h3>
+                <p>@item.JobTitle</p>
+                <div class="card-grid">
+                    <div>
+                        <p class="label">Email</p>
+                        <p>@item.Email</p>
+                    </div>
+                    <div>
+                        <p class="label">Department</p>
+                        <p>@item.Department</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </body>
 </html>

@@ -82,6 +82,36 @@ namespace SdmFramework.Service.HttpHandler
                 await outputStream.WriteAsync(buffer, 0, buffer.Length);
             }
         }
+        
+        private async Task HandleStaticFile(HttpListenerResponse response, string localPath)
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.Combine(basePath, localPath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+            if (!File.Exists(filePath))
+            {
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                return;
+            }
+
+            string extension = Path.GetExtension(filePath).ToLower();
+            response.ContentType = extension switch
+            {
+                ".css" => "text/css",
+                ".js"  => "application/javascript",
+                ".png" => "image/png",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".ico" => "image/x-icon",
+                _      => "application/octet-stream"
+            };
+
+            response.StatusCode = (int)HttpStatusCode.OK;
+            byte[] buffer = await File.ReadAllBytesAsync(filePath);
+            response.ContentLength64 = buffer.Length;
+
+            using Stream outputStream = response.OutputStream;
+            await outputStream.WriteAsync(buffer, 0, buffer.Length);
+        }
         /// <summary>
         /// Asynchronously processes incoming HTTP requests and handles corresponding actions.
         /// </summary>
@@ -102,7 +132,13 @@ namespace SdmFramework.Service.HttpHandler
                         
                         var path = request.Url.LocalPath;
                         var query = request.Url.Query;
-
+                        
+                        if (request.Url.LocalPath.StartsWith("/wwwroot/"))
+                        {
+                            await HandleStaticFile(context.Response, request.Url.LocalPath);
+                            context.Response.Close();
+                            continue;
+                        }
                         
                         var result = _router.ResolveRoute(requestType, path, query);
                         if (result is IActionResult actionResult) await HandleActionResult(context.Response, actionResult);

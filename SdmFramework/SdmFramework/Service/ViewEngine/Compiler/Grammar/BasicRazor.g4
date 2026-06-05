@@ -23,7 +23,8 @@ iterationVariable: '@' ID | '@' ID '.' ID;
 
 globalVariable:'@Global.' ID; 
 
-openingTag: '<' ID '>' ;
+openingTag: '<' ID attribute* '>' ;
+attribute: ID '=' (STRING | modelDataExpression | iterationVariable) ;
 
 closingTag: '</' ID '>' ;
 
