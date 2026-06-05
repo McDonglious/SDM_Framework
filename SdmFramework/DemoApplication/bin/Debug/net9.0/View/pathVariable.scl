@@ -1,0 +1,13 @@
+@model Integer
+
+<html>
+<head>
+    <title>PathVariable primitive model test</title>
+</head>
+<body>
+    <h2>Path Variable and Primitive model Test</h2>
+    <p>the PathVariable is received and send back into the view as a primitive model</p>
+    <p>the correct output should be the same as the path variable</p>
+    <h3>output is@Model.Value</h3>
+</body>
+</html>

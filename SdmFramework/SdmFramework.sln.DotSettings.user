@@ -1,0 +1,20 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4e84ba62_002D3c01_002D40b1_002D92d2_002Db15b9cd9acc1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MatchSegments_MultipleVariableRouteWithMatchingPath_ReturnsMatch #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::995CC755-A455-4833-BE89-F29EB83E11CB::net7.0::SdmFrameworkTest.Tests+RouterTests.MatchSegments_MultipleVariableRouteWithMatchingPath_ReturnsMatch&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::995CC755-A455-4833-BE89-F29EB83E11CB::net7.0::SdmFrameworkTest.UnitTest+RoutePathHelperTests.ACleanPathShouldReturnAnEmptyListOfParameters&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=57363e50_002De747_002D4679_002Dac77_002D3d8f2c8da898/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MatchSegments_MultipleVariableRouteWithMatchingPath_ReturnsMatch" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::995CC755-A455-4833-BE89-F29EB83E11CB::net7.0::SdmFrameworkTest.Tests+RouterTests.MatchSegments_MultipleVariableRouteWithMatchingPath_ReturnsMatch&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8a2dde90_002D05ff_002D4aa5_002D88a4_002D4ec327f9d18a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MatchSegments_NonVariableRouteWithMatchingPath_ReturnsMatch" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::995CC755-A455-4833-BE89-F29EB83E11CB::net7.0::SdmFrameworkTest.Tests+RouterTests.MatchSegments_NonVariableRouteWithMatchingPath_ReturnsMatch&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c349d351_002D8f15_002D421e_002D8465_002Db705922d569f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RouterTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

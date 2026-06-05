@@ -1,0 +1,21 @@
+@model Person
+
+<html>
+<head>
+    <title></title>
+</head>
+    <body>
+        <h1>The CodeBlock</h1>
+            @{
+            left = 5;
+            right = 2;
+            result = left + right;
+            
+            if(result > 5)
+                {
+                result = left - right;
+                }
+             }
+        <p>@Global.result</p>   
+</body>
+</html>
