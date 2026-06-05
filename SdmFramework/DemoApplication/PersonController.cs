@@ -11,7 +11,7 @@ public class PersonController
     public IActionResult About()
     {
         Person person = new Person("sander", "sanderdemiddelaer@hotmail.com");
-        return new View(Path.Combine("View", "index.scl"), person);
+        return new View("index", person);
     }
 
     [HttpGet("/listing")]
@@ -23,24 +23,24 @@ public class PersonController
         list.Add(new Person("michiel", "debroer@email.com"));
         list.Add(new Person("bart", "debroer@email.com"));
         list.Add(new Person("pieter", "debroer@email.com"));
-        return new View(Path.Combine("View", "listing.scl"), list);
+        return new View("listing", list);
     }
 
     [HttpGet("/blockTest")]
     public IActionResult BlockTest()
     {
-        return new View(Path.Combine("View", "blockTest.scl"), null);
+        return new View("blockTest", null);
     }
 
     [HttpGet("/users/{id}")]
     public IActionResult UserDetails([PathVariable] int id)
     {
-        return new View(Path.Combine("View", "pathVariable.scl"), id);
+        return new View("pathVariable", id);
     }
 
     [HttpGet("/users")]
     public IActionResult FilterUsers([QueryParam] int id)
     {
-        return new View(Path.Combine("View", "queryParam.scl"), id);
+        return new View("queryParam", id);
     }
 }

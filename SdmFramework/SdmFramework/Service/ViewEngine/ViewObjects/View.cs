@@ -1,15 +1,17 @@
 namespace SdmFramework.Service.ViewEngine.ViewObjects;
 
 /// <summary>
-/// Represents the result of an action as a view with a specified path and model.
+/// Represents the result of an action as a view with a specified name and model.
+/// The framework resolves the view file path by convention.
 /// </summary>
 public class View : IActionResult
 {
-    public string Path { get; }
+    public string Name { get; }
     public object Model { get; }
-    public View(string path, object model)
+    
+    public View(string name, object model)
     {
-        Path = path;
+        Name = name;
         Model = model;
     }
 

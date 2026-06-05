@@ -1,124 +1,91 @@
 # SDM Framework
 
-## author
-Sander de Middelaer - IAO03
+A lightweight MVC web framework for C# built from scratch, featuring a custom view engine powered by ANTLR4. The framework handles HTTP routing, controller discovery via reflection, and view rendering using a Razor-inspired templating language (`.scl` files) with its own grammar, lexer, and parser.
 
+**Author:** Sander de Middelaer
 
-# Custom MVC Templating Language
-
-Welcome to the documentation for our custom MVC templating language! This language is designed to provide a simple and expressive syntax for building dynamic views in our MVC framework.
+---
 
 ## Table of Contents
 
-- [Model Declaration](#model-declaration)
-- [Displaying Model Data](#displaying-model-data)
-- [HTML Elements](#html-elements)
-- [Razor Blocks](#razor-blocks)
-- [Control Flow Structures](#control-flow-structures)
-    - [If Statements](#if-statement)
-    - [foreach Loops](#foreach-statement)
-- [Expressions](#expressions)
-- [Antler4](#antlr4-integration)
-- [Framework Usage](#using-the-sdmframework-in-csharp)
-- [testing](#testing-the-sdmframework)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Framework Initialization](#framework-initialization)
+- [Controllers and Routing](#controllers-and-routing)
+- [Views](#views)
+- [Templating Language](#templating-language)
+  - [Model Declaration](#model-declaration)
+  - [Displaying Model Data](#displaying-model-data)
+  - [HTML Elements](#html-elements)
+  - [Razor Blocks and Global Variables](#razor-blocks-and-global-variables)
+  - [If Statements](#if-statements)
+  - [foreach Loops](#foreach-loops)
+  - [Expressions](#expressions)
+- [Path Variables and Query Parameters](#path-variables-and-query-parameters)
+- [ANTLR4](#antlr4)
+- [Testing](#testing)
 
-## Model Declaration
+---
 
-```razor
-@model MyModel
-```
-Currently "MyModel" is still required but it can be anything as it is not used to bind the model
-## Displaying Model Data
+## Project Structure
 
-```razor
-<h1>@Model.Title</h1>
 ```
-This assumes that the model is class with a Title as property
-```razor
-<h1>@Model.Value</h1>
-```
-Value is used when the model is a primitive object.
-## HTML Elements
-```html
-<div>
-    <p>Hello World</p>
-</div>
-```
-Currently special text is not supported inside html elements as plain text.
-## Razor Blocks
-```razor
-@{
-    var greeting = "Hello, ";
-    var name = "John";
-}
+SdmFramework/
+├── SdmFramework/          # Core framework library
+│   ├── Annotations/       # Controller, HttpGet/Post/Put/Delete, PathVariable, QueryParam
+│   ├── Model/             # Model wrapping
+│   ├── Registry/          # Route registry and interfaces
+│   ├── Service/
+│   │   ├── AssemblyProcessor/   # Reflection-based controller and route discovery
+│   │   ├── HttpHandler/         # HTTP handling, routing, and path resolution
+│   │   └── ViewEngine/          # ANTLR4-based view compiler and renderer
+│   └── Utils/
+├── DemoApplication/       # Example application using the framework
+│   ├── View/              # .scl template files
+│   ├── Model/
+│   └── PersonController.cs
+└── SdmFrameworkTest/      # Unit tests
 ```
 
-# Control Flow Structures
-## If Statement
-```razor
-@if (condition) {
-    // Code to execute when the condition is true
-}
-```
+---
 
-## foreach Statement
-```razor
-@foreach(Model)
-    {
-        <h1>@item.Name</h1>
-        <p>@item.Email</p>
-    }  
-```
-this assumes the model itself is a iterable object.
+## Getting Started
 
-## Expressions
-```razor
-@{
-    result = 2 + 3 * (4 - 1);
-}
-```
+**Prerequisites:** .NET 9.0 SDK
 
-## Global Variables
-```razor
-@{
-    result = 2 + 3 * (4 - 1);
-}
-```
-Result is stored as a global variable and will be accesible like so
-
-```razor
-<p>@Global.result</p>
-```
-
-# ANTLR4 Integration
-
-To provide support for our custom MVC templating language, we use the ANTLR4 tool to generate a lexer and parser for our language. This allows us to parse and interpret the templates efficiently.
-
-## ANTLR4 Commands
-
-To generate the lexer and parser from our grammar file (`BasicRazor.g4`), we use the following ANTLR4 commands:
-
-we are using Absolute Paths
+Clone the repository and build the solution:
 
 ```bash
-antlr4 -visitor -Dlanguage=CSharp -o C:\School\programmeren3\GIT\sander.demiddelaer\SdmFramework\SdmFramework\Service\ViewEngine\Compiler\Visitor\Generated BasicRazor.g4
+git clone <repo-url>
+cd SdmFramework
+dotnet build SdmFramework.sln
 ```
 
-# Using the SdmFramework in CSharp
+No additional tooling is required. The ANTLR4-generated lexer and parser are already committed to the repository. The only runtime dependency is `Antlr4.Runtime.Standard`, which is restored automatically via NuGet.
 
-## Framework initialization
+To run the demo application:
+
+```bash
+cd DemoApplication
+dotnet run
+```
+
+---
+
+## Framework Initialization
+
 ```csharp
 var sdmFramework = new SdmFrameWorkApplication("http://localhost:8080/");
 sdmFramework.Run(typeof(Program));
 ```
-simply add the library make an instance of the framework with the base url you wish it to listen to and then Run it with the Type of your application.
 
-## Controller and Method Annotations
+Pass the base URL the framework should listen on, and the type of your application's entry point. The framework uses reflection to scan the assembly for controllers and register their routes automatically.
 
+---
 
-To use the SdmFramework effectively, controllers must be annotated with the `Controller` attribute. The `Controller` attribute requires a path that will be used as the base path for all actions within the controller.
-Methods too must be annotated correctly with a child of the attribute HttpRequest wich in this example is HttpGet with also a path , both will be used to create a route key.
-### Example:
+## Controllers and Routing
+
+Controllers must be annotated with `[Controller]`, which takes a base path. Action methods are annotated with an HTTP method attribute (`[HttpGet]`, `[HttpPost]`, `[HttpPut]`, `[HttpDelete]`), each taking a sub-path. The two paths are combined to form the full route.
 
 ```csharp
 using SdmFramework.Annotations;
@@ -126,53 +93,187 @@ using SdmFramework.Annotations;
 [Controller("/home")]
 public class HomeController
 {
-    // Controller actions will be relative to "/home"
-    
     [HttpGet("/about")]
     public IActionResult About()
     {
+        Person person = new Person("sander", "sander@example.com");
+        return new View("index", person);
+    }
 
-        Person person = new Person("sander", "sanderdemiddelaer@hotmail.com");
-        
-        return new View("C:\\School\\programmeren3\\GIT\\sander.demiddelaer\\SdmFramework\\DemoApplication\\View\\index.scl", person);
+    [HttpGet("/listing")]
+    public IActionResult Listing()
+    {
+        var list = new List<Person>
+        {
+            new Person("sander", "sander@example.com"),
+            new Person("tom", "tom@example.com")
+        };
+        return new View("listing", list);
     }
 }
 ```
-## return type
-the return type should be IActionResult. currently only implimentation supported is the View wich takes the Absolute Path of the .scl file, wich holds the custom razor code, and a model  
-# URL usage
 
-1. **URL Example:**
-  - URL: `http://base-url/controller/action`
-  - Example: `http://localhost:8080/myapp/home/index`
+URL format: `http://<base-url>/<controller-path>/<action-path>`
 
-base-url = the url you've provided the framework when initializing it.
+Example: `http://localhost:8080/home/about`
 
+---
 
-# Testing the SdmFramework
+## Views
 
-## Unit Tests
+Action methods return a `View`, which takes the name of the template file and the model object:
 
-We have provided a set of unit tests that are designed to work out of the box. You can run these tests to ensure the correctness and functionality of the SdmFramework.
+```csharp
+return new View("index", person);
+```
 
-## Browser Testing
+The framework resolves the view by convention: it looks for a file named `<name>.scl` inside a `View/` folder relative to the application's output directory. To ensure `.scl` files are included in the build output, add the following to your `.csproj`:
 
-If you wish to test the framework from the browser, you can use the following sample URLs:
-URL: `http://your-server/base-url/controller/action`
-1. **Display a View with Model Data:**
-  - URL: `http://localhost:8080/Testcontroller/about`
+```xml
+<ItemGroup>
+    <None Update="View\*.scl">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+</ItemGroup>
+```
 
-2. **Display a View with a collection as Model Data:**
-- URL: `http://localhost:8080/Testcontroller/listing`
+---
 
+## Templating Language
 
-3. **Display a View with a primitive Model Data using path variables:**
-- URL: `http://localhost:8080/Testcontroller/users/2`
+Templates are written in `.scl` files using a Razor-inspired syntax.
 
-4. **Display a View with a primitive Model Data using query parameters:**
-- URL: `http://localhost:8080/Testcontroller/users?id=5`
+### Model Declaration
 
-These URLs provide a quick way to test different aspects of the SdmFramework from the browser. this assumes that we have our Test application named "DemoApplication"
+```razor
+@model MyModel
+```
 
-### Additional info
-When pulling the sdmframework with it's demo application the absolute path on the view that should point to the .scl file will need to be reset to the correct path for the provided URL's to work.
+This is required at the top of each template. The identifier after `@model` is not used for type binding — it is a structural declaration.
+
+### Displaying Model Data
+
+For a model that is a class:
+
+```razor
+<h1>@Model.Title</h1>
+<p>@Model.Email</p>
+```
+
+For a model that is a primitive:
+
+```razor
+<p>@Model.Value</p>
+```
+
+### HTML Elements
+
+Standard HTML is supported:
+
+```html
+<div>
+    <p>Hello World</p>
+</div>
+```
+
+> Note: Plain text directly inside HTML elements (outside of tags) is not currently supported.
+
+### Razor Blocks and Global Variables
+
+Variables declared in a Razor block are stored as globals and accessible anywhere in the template:
+
+```razor
+@{
+    var greeting = "Hello";
+    var name = "John";
+}
+
+<p>@Global.greeting</p>
+```
+
+### If Statements
+
+```razor
+@if (condition) {
+    <p>Condition is true</p>
+}
+```
+
+### foreach Loops
+
+Iterates over the model when the model itself is a collection. Each element is accessed via `@item`:
+
+```razor
+@foreach(Model)
+{
+    <h1>@item.Name</h1>
+    <p>@item.Email</p>
+}
+```
+
+### Expressions
+
+Mathematical expressions are supported inside Razor blocks:
+
+```razor
+@{
+    result = 2 + 3 * (4 - 1);
+}
+
+<p>@Global.result</p>
+```
+
+---
+
+## Path Variables and Query Parameters
+
+**Path variable:**
+
+```csharp
+[HttpGet("/users/{id}")]
+public IActionResult UserDetails([PathVariable] int id)
+{
+    return new View("pathVariable", id);
+}
+```
+
+**Query parameter:**
+
+```csharp
+[HttpGet("/users")]
+public IActionResult FilterUsers([QueryParam] int id)
+{
+    return new View("queryParam", id);
+}
+```
+
+---
+
+## ANTLR4
+
+The templating language is defined in `SdmFramework/Service/ViewEngine/Compiler/Grammar/BasicRazor.g4`. ANTLR4 is used to generate the lexer and parser, which are committed to the repository under `Compiler/Visitor/Generated/`. The runtime dependency (`Antlr4.Runtime.Standard`) is pulled in via NuGet — no ANTLR CLI installation is needed to build or run the project.
+
+If you modify the grammar and need to regenerate the lexer and parser, use the following command (adjust the output path as needed):
+
+```bash
+antlr4 -visitor -Dlanguage=CSharp -o <absolute-path-to-Generated-folder> BasicRazor.g4
+```
+
+---
+
+## Testing
+
+The solution includes a unit test project (`SdmFrameworkTest`) which can be run with:
+
+```bash
+dotnet test
+```
+
+The demo application also provides a set of browser-testable endpoints. With `DemoApplication` running on `http://localhost:8080/`:
+
+| Scenario | URL |
+|---|---|
+| View with object model | `http://localhost:8080/Testcontroller/about` |
+| View with collection model | `http://localhost:8080/Testcontroller/listing` |
+| View with primitive via path variable | `http://localhost:8080/Testcontroller/users/2` |
+| View with primitive via query parameter | `http://localhost:8080/Testcontroller/users?id=5` |

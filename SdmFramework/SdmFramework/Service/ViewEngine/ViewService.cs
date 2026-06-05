@@ -22,10 +22,11 @@ public class ViewService
     {
         if (actionResult is View view)
         {
-            string code = File.ReadAllText(view.Path);
-            
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string fullPath = Path.Combine(basePath, "View", view.Name + ".scl");
+        
+            string code = File.ReadAllText(fullPath);
             string html = _parserService.ParseAndVisit(code, view.Model);
-            
             return html;  
         }
 
