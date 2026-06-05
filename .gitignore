@@ -3,3 +3,7 @@
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Build output
+bin/
+obj/
